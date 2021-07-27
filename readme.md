@@ -13,10 +13,11 @@ npm run build
 ```
 
 ## Run SC UDP server
+[example here](https://github.com/colinbdclark/osc.js-examples/tree/master/browser)
+* Install dependencies in web as well
 ``` bash
-# Install dependencies in web as well
 cd ./web && npm install
-
-# Run the local server at localhost:8080
-node .
 ```
+* Run node . in the Terminal
+* Open http://localhost:8081 in your browser
+* Control the synth using OSC messages sent from Lemur or another OSC server
