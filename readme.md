@@ -1,4 +1,4 @@
-# Supercollider+Javascript
+# Threejs client
 
 ## Run Threejs
 ``` bash

@@ -4,7 +4,10 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 import waterVertex from './shaders/water/vertex.glsl'
 import waterFragment from'./shaders/water/fragment.glsl'
+import Synth from './synth.js'
 
+// Loading synth
+const synth = new Synth()
 /**
  * Base
  */

@@ -1,11 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/osc@2.4.2/dist/osc-browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flocking@2.0.2/dist/flocking-all.min.js"></script>
     <title>26 - Raging sea</title>
 </head>
+
 <body>
     <canvas class="webgl"></canvas>
+    <div class="synth">
+        <h1>osc.js Web Socket Demo</h1>
+        <button>Start</button>
+
+        <div id="messageArea">
+            <p id="messageLabel">OSC Message:</p>
+            <pre id="message"></pre>
+        </div>
+    </div>
 </body>
+
 </html>
