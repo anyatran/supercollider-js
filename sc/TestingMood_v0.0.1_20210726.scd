@@ -1,6 +1,6 @@
 ////// 0
 (
-~targetAddress = NetAddr("127.0.0.1", 1234);  // Change port 1234 to the one of the target application
+~targetAddress = NetAddr("192.168.1.184", 57121);  // Change port 1234 to the one of the target application
 ~baseMessage = "/fromSuperCollider/";
 
 GlobalParams.setSeedSafe(1923);  // Change this number to randomize the path
