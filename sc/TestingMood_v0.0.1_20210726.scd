@@ -349,11 +349,21 @@ Pdef(\bell_3,
 	Pdef(\bell_2).stop;
 	Pdef(\bell_3).stop;
 });
+
+~mood_stop_now = Routine({
+	~mood_start.stop;
+	~fade_val.value(~rnt, \amp, 0, 0.2, GlobalParams.linkClock);
+	~fade_val.value(~rnt, \amp2, 0, 0.2, GlobalParams.linkClock);
+	Pdef(\bell_1).stop;
+	Pdef(\bell_2).stop;
+	Pdef(\bell_3).stop;
+});
 )
 ~mood_start.play(GlobalParams.linkClock, quant: 4);
 // Increase volume by clicking on the green numbers down-right
 
 ~mood_stop.play(GlobalParams.linkClock, quant: 4);
+~mood_stop_now.play(GlobalParams.linkClock, quant: 4);
 ~free_storm.value;
 // To continue running properly, call Pattern block (#3) again
 
