@@ -1,4 +1,5 @@
 uniform float uTime;
+uniform float uStartTime;
 uniform float uBigWavesElevation;
 uniform float uBigWavesSpeed;
 uniform vec2 uBigWavesFrequency;
@@ -91,6 +92,8 @@ float cnoise(vec3 P) {
 
 void main() {
   vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+  const float timespan = 10.0; // e.g. 3 seconds
+  float w = clamp((uTime-uStartTime) / timespan, 0.0, 1.0);
   
   // from -uBigWavesElevation to uBigWavesElevation
   // we want waves to move up and down on y axis depends on x and z coord
@@ -109,7 +112,7 @@ void main() {
     elevation -= abs(cnoise(vec3(
       modelPosition.xz * uSmallWavesFrequency * i,
       uTime * uSmallWavesSpeed)) *
-      uSmallWavesElevation / i);
+      w / i);
   }
   modelPosition.y += elevation;
   vec4 viewPosition = viewMatrix * modelPosition;

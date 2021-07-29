@@ -29,12 +29,12 @@ const modulatorSpec = {
 };
 
 class Synth {
-  constructor() {
+  constructor(onListen) {
     this.synth = null;
     this.oscPort = new osc.WebSocketPort({
       url: 'ws://localhost:8081'
     });
-    this.listen();
+    this.listen(onListen);
     this.oscPort.open();
 
     this.oscPort.socket.onmessage = (e) => {
@@ -105,17 +105,17 @@ class Synth {
     }
   };
 
-  listen = () => {
+  listen = (onListen) => {
     var that = this;
     // TODO update button
-    $('button').click(function () {
+    $('button').click(() => {
       that.createSynth();
       that.play();
     });
 
     this.oscPort.on('message', this.mapMessage);
-    this.oscPort.on('message', function (msg) {
-      console.log('message', msg);
+    this.oscPort.on('message', (msg) => {
+      onListen(msg);
     });
     this.oscPort.on('close', this.pause);
   };
