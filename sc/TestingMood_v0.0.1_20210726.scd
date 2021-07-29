@@ -198,14 +198,14 @@ Routine({
 	});}).play(clock);
 };
 
-~oscTransmitter =
+~oscTransmitter = {|keys_to_transmit|
 	Pfunc({|ev|
 		var oscArray = [~baseMessage ++ (ev.id ?? '') ];
 
 		// Construct the osc array from the Pbind's keys
 		ev.keysValuesDo{|k,v|
 			// Filter out the 'destination' and 'id' keys
-			(k != 'destination' and: {k != 'id'}).if{
+			(k != 'destination' and: {k != 'id'} and: {keys_to_transmit.includes(k)}).if{
 				oscArray = oscArray ++ k ++ [v];
 			}
 		};
@@ -214,6 +214,7 @@ Routine({
 	//ev.destination.sendMsg(oscArray)
 	ev.destination.sendBundle(~latency, oscArray)
 	});
+}
 )
 
 ////// 3
@@ -236,13 +237,13 @@ Pdef(\bell_1,
 		\in_amp_sing, 0,
 		\destination, ~targetAddress,
 		\id, 'bell_1',
-		\sendOSC, ~oscTransmitter,
+		\sendOSC, ~oscTransmitter.([\id, \sing_switch]),
   )
 );
 
 Pdef(\bell_2,
   Pbind(\instrument, \prayer_bell_in,
-		\dur, Pwhite(8, 20, inf),
+		\dur, Pwhite(8, 20, inf) / 4,
 		\decayscale, Pkey(\dur).sqrt/4,
 		\freq, Prand((2, 3 .. 16)*~basefreq, inf),
 		\startdecay, Pkey(\dur)*Pkey(\freq).sqrt/19,
@@ -257,7 +258,7 @@ Pdef(\bell_2,
 		\in_amp_sing, 0,
 		\destination, ~targetAddress,
 		\id, 'bell_2',
-		\sendOSC, ~oscTransmitter,
+		\sendOSC, ~oscTransmitter.([\id, \freq]),
   )
 );
 
@@ -293,10 +294,10 @@ Pdef(\bell_3,
   ])
 );
 )
-
+[~basefreq * 3, ~basefreq * 16].log2
 ////// 4
 (  // These routines start and stop the sounds and send OSC value messages
-~make_storm = {~rnt ?? {~rnt = Synth.before(~bell_group, "rain_and_thunder_v1.0", [out: ~rnt_bus, out2:0, amp:0, amp2:0, dustfactor:0])}};
+~make_storm = {~rnt.isPlaying.not.if {~rnt = Synth.before(~bell_group, "rain_and_thunder_v1.0", [out: ~rnt_bus, out2:0, amp:0, amp2:0, dustfactor:0])}};
 ~free_storm = {~rnt.free};
 
 ~mood_start = Routine({
@@ -367,3 +368,6 @@ Pdef(\bell_3,
 ~free_storm.value;
 // To continue running properly, call Pattern block (#3) again
 
+~fade_val.value(~rnt, \dustfactor, 0.08, 20, GlobalParams.linkClock);
+~fade_val.value(~rnt, \amp2, 0.03, 20, GlobalParams.linkClock);
+~fade_val.value(~rnt, \amp, 0.8, 20, GlobalParams.linkClock);
