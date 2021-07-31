@@ -10,6 +10,9 @@ npm run dev
 
 # Build for production in the dist/ directory
 npm run build
+
+# Rebuild dist when save
+npm run build.watch
 ```
 
 ## Run SC UDP server
